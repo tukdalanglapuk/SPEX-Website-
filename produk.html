@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SPEX — Produk</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{ --accent:#1E3A8A; --accent-2:#3B82F6; }
+    html { font-size:20px; }
+    body { margin:0; font-family:Inter, sans-serif; background: linear-gradient(180deg,#eef2ff,#fff); color:#0b1220; -webkit-font-smoothing:antialiased; }
+    .brand{ font-family:Poppins, sans-serif; font-weight:800; background:linear-gradient(90deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+    /* header */
+    header { position:fixed; top:0; left:0; right:0; z-index:90; background:transparent; transition: background-color .35s, box-shadow .35s; }
+    header.scrolled{ background:rgba(255,255,255,.92); box-shadow:0 6px 30px rgba(14,30,80,0.08); }
+    header .inner{ max-width:1440px; margin:0 auto; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; }
+    header nav a{ margin-left:1rem; font-weight:600; color:var(--accent); }
+
+    /* full bleed helper */
+    .full-bleed{ width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; position:relative; }
+    .centered{ max-width:1440px; margin:0 auto; padding:0 2rem; }
+
+    main{ padding-top:96px; }
+
+    /* top banner */
+    .top-banner{ border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:center; gap:1rem; margin:1rem 0; box-shadow:0 18px 60px rgba(14,30,80,0.06); background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; }
+    .top-banner a{ background:#fff; color:var(--accent); padding:.5rem .8rem; border-radius:10px; font-weight:700; }
+
+    /* filter sticky */
+    .filter-bar{ position:sticky; top:84px; z-index:80; display:flex; gap:.6rem; padding:12px; background: rgba(255,255,255,0.9); border-radius:12px; box-shadow:0 10px 28px rgba(14,30,80,0.05); margin:1rem 2rem; align-items:center; }
+    .filter-btn{ padding:.6rem .85rem; border-radius:10px; border:1px solid rgba(15,23,42,0.06); background:white; font-weight:600; cursor:pointer; }
+    .filter-btn.active{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; box-shadow:0 10px 30px rgba(30,58,138,0.12); }
+
+    /* product grid 4 columns */
+    .grid-wrap{ display:grid; grid-template-columns: repeat(4,1fr); gap:1.25rem; padding:1rem 2rem 4rem 2rem; }
+    .card{ background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 12px 40px rgba(14,30,80,0.06); transition: transform .28s, box-shadow .28s; }
+    .card:hover{ transform: translateY(-10px); box-shadow:0 28px 80px rgba(14,30,80,0.12); }
+    .prod-img{ width:100%; height:260px; object-fit:cover; display:block; }
+
+    .prod-body{ padding:1rem; }
+    .prod-title{ font-weight:700; font-size:1.05rem; }
+    .prod-desc{ color:#475569; font-size:0.98rem; margin-top:.45rem; min-height:2.4rem; }
+    .prod-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:.9rem; }
+
+    .price{ color:var(--accent); font-weight:800; }
+
+    .btn-accent{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; padding:.6rem .9rem; border-radius:10px; font-weight:700; cursor:pointer; }
+
+    /* modal detail */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:200; }
+    .modal.active{ display:flex; }
+    .modal .panel{ background:#fff; border-radius:14px; max-width:920px; width:94%; padding:18px; box-shadow:0 30px 90px rgba(14,30,80,0.14); }
+
+    /* FOOTER */
+    footer {
+      background:#fff;
+      border-top:1px solid #eef2ff;
+      padding:2.25rem 0;
+      color:#334155;
+      margin-top:4rem;
+    }
+    .footer-inner {
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:1.25rem;
+      max-width:1440px;
+      margin:0 auto;
+      padding:0 2rem;
+    }
+
+    /* responsive */
+    @media (max-width:1200px){ .grid-wrap{ grid-template-columns: repeat(3,1fr); } }
+    @media (max-width:900px){ .grid-wrap{ grid-template-columns: repeat(2,1fr); } .filter-bar{ top:76px; } }
+    @media (max-width:640px){ html{font-size:17px;} .grid-wrap{ grid-template-columns:1fr; padding:1rem; } .prod-img{ height:200px; } .filter-bar{ margin:0.6rem; overflow:auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner centered">
+      <a href="index.html" class="brand text-3xl">SPEX</a>
+      <nav class="hidden lg:flex items-center">
+        <a href="index.html" class="px-3">Home</a>
+        <a href="produk.html" class="px-3">Produk</a>
+        <a href="keranjang.html" class="px-3">Keranjang</a>
+        <a href="kontak.html" class="px-3">Kontak</a>
+      </nav>  
+    </div>
+  </header>
+
+  <main>
+    <div class="centered">
+      <div class="top-banner">
+        <div>
+          <div class="text-xl font-bold">Temukan Sepatu Favoritmu</div>
+          <div class="text-sm mt-1">Filter berdasarkan kategori — Running, Football, Futsal, Lifestyle.</div>
+        </div>
+        <div><a href="keranjang.html">Lihat Keranjang</a></div>
+      </div>
+
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-cat="all">Semua</button>
+        <button class="filter-btn" data-cat="running">Running</button>
+        <button class="filter-btn" data-cat="football">Football</button>
+        <button class="filter-btn" data-cat="futsal">Futsal</button>
+        <button class="filter-btn" data-cat="lifestyle">Lifestyle</button>
+        <input id="search" placeholder="Cari produk..." class="ml-auto px-3 py-2 border rounded" style="min-width:200px;">
+      </div>
+    </div>
+
+    <section class="full-bleed">
+      <div class="grid-wrap" id="grid">
+    
+      </div>
+    </section>
+  </main>
+
+  <!-- modal detail -->
+  <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
+    <div class="panel">
+      <button onclick="closeDetail()" style="float:right;font-size:22px;background:none;border:none;cursor:pointer">×</button>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <img id="dimg" src="" style="width:48%;height:320px;object-fit:cover;border-radius:8px">
+        <div style="flex:1">
+          <h3 id="dtitle" style="font-size:1.4rem;font-weight:800"></h3>
+          <p id="dprice" style="color:var(--accent);font-weight:800;margin-top:.6rem"></p>
+          <p id="ddesc" style="margin-top:.8rem;color:#475569;line-height:1.5"></p>
+          <div style="margin-top:1rem;display:flex;gap:.6rem">
+            <button id="dadd" class="btn-accent">Tambah ke Keranjang</button>
+            <button onclick="closeDetail()" style="padding:.6rem .9rem;border-radius:10px;border:1px solid #e2e8f0;background:white;cursor:pointer">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="full-bleed">
+    <div class="footer-inner">
+      <div>
+        <div class="brand text-2xl">SPEX</div>
+        <p class="text-gray-600 mt-3">Performance Beyond Limits — © 2025 by $alemo</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Bantuan</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li><a href="#" class="hover:underline">Pusat Bantuan</a></li>
+          <li><a href="#" class="hover:underline">Kebijakan Pengembalian</a></li>
+          <li><a href="#" class="hover:underline">Pembayaran & Pengiriman</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Kontak</h4>
+        <p class="text-gray-600">cs@spex.co.id • +62 812-3456-7890</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // header scroll effect
+    window.addEventListener('scroll', ()=> {
+      const header = document.querySelector('header');
+      if(window.scrollY > 60) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+    });
+
+    const products = [
+      {id:0,name:'SPEX Lightspeed',price:499000,cat:'running',img:'https://www.specs.id/media/catalog/product/s/p/spe1040118_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Midsole responsif & upper breathable — ideal untuk lari.'},
+      {id:1,name:'SPEX Runner Pro',price:629000,cat:'running',img:'https://www.specs.id/media/catalog/product/s/p/spe1040117_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Didesain untuk kecepatan dengan struktur stride efisien.'},
+      {id:2,name:'SPEX Trailgrip',price:649000,cat:'running',img:'https://www.specs.id/media/catalog/product/s/p/spe1040084_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Outsole agresif untuk jalur off-road & trail running.'},
+
+      {id:3,name:'SPEX Strike',price:699000,cat:'football',img:'https://www.specs.id/media/catalog/product/s/p/spe1010331_1_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Cleat with precision stud layout for pitch control.'},
+      {id:4,name:'SPEX Control',price:629000,cat:'football',img:'https://www.specs.id/media/catalog/product/s/p/spe1010295-1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Enhanced ball touch and low-profile fit.'},
+      {id:5,name:'SPEX PowerShot',price:749000,cat:'football',img:'https://www.specs.id/media/catalog/product/s/p/spe1010336_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Reinforced toe & outsole for strong strikes.'},
+
+      {id:6,name:'SPEX Accelerator',price:579000,cat:'futsal',img:'https://www.specs.id/media/catalog/product/s/p/spe1020285-1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Outsole indoor khusus—kontrol & traksi optimal.'},
+      {id:7,name:'SPEX Futsal Pro',price:559000,cat:'futsal',img:'https://www.specs.id/media/catalog/product/s/p/spe1020322_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Dirancang untuk dominasi lapangan indoor.'},
+      {id:8,name:'SPEX QuickTurn',price:499000,cat:'futsal',img:'https://www.specs.id/media/catalog/product/s/p/spe1020303_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Low-profile for fast direction changes.'},
+
+      {id:9,name:'SPEX Metasala',price:429000,cat:'lifestyle',img:'https://www.specs.id/media/catalog/product/s/p/spe1000145_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Casual cushioning with minimal aesthetic.'},
+      {id:10,name:'SPEX Casual  Flex',price:559000,cat:'lifestyle',img:'https://www.specs.id/media/catalog/product/s/p/spe1000158_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Stylish design with breathable materials.'},
+      {id:11,name:'SPEX UltraComfort',price:689000,cat:'lifestyle',img:'https://www.specs.id/media/catalog/product/s/p/spe1000160_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683',desc:'Memory-foam midsole for all-day comfort.'}
+    ];
+
+    // render grid
+    const grid = document.getElementById('grid');
+    function render(cat='all', search=''){
+      grid.innerHTML='';
+      const list = products.filter(p => (cat==='all' || p.cat===cat) && p.name.toLowerCase().includes(search.toLowerCase()));
+      list.forEach(p=>{
+        const el = document.createElement('article');
+        el.className='card';
+        el.innerHTML = `
+          <img class="prod-img" src="${p.img}" alt="${p.name}">
+          <div class="prod-body">
+            <div class="prod-title">${p.name}</div>
+            <div class="prod-desc">${p.desc}</div>
+            <div class="prod-foot">
+              <div class="price">Rp ${p.price.toLocaleString()}</div>
+              <div style="display:flex;gap:.5rem">
+                <button class="px-3 py-2 border rounded" onclick="openDetail(${p.id})">Detail</button>
+                <button class="btn-accent" onclick="addToCart(${p.id}, this)">Tambah</button>
+              </div>
+            </div>
+          </div>`;
+        grid.appendChild(el);
+      });
+      if(list.length===0) grid.innerHTML='<div style="padding:2rem;text-align:center;color:#64748b">Produk tidak ditemukan.</div>';
+    }
+
+    // init
+    (function(){ render('all'); })();
+
+    // filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        render(btn.dataset.cat, document.getElementById('search').value || '');
+      });
+    });
+
+    // search
+    document.getElementById('search').addEventListener('input', (e)=>{
+      const active = document.querySelector('.filter-btn.active')?.dataset.cat || 'all';
+      render(active, e.target.value);
+    });
+
+    // detail modal
+    function openDetail(id){
+      const p = products.find(x=>x.id===id);
+      document.getElementById('dimg').src = p.img;
+      document.getElementById('dtitle').textContent = p.name;
+      document.getElementById('dprice').textContent = 'Rp ' + p.price.toLocaleString();
+      document.getElementById('ddesc').textContent = p.desc + ' (Material premium, breathability, midsole teruji).';
+      document.getElementById('detailModal').classList.add('active');
+      document.getElementById('detailModal').setAttribute('aria-hidden','false');
+      document.getElementById('dadd').onclick = ()=>{ addToCart(id); closeDetail(); };
+    }
+    function closeDetail(){ document.getElementById('detailModal').classList.remove('active'); document.getElementById('detailModal').setAttribute('aria-hidden','true'); }
+
+    // cart (localStorage)
+    function getCart(){ return JSON.parse(localStorage.getItem('cart')||'[]'); }
+    function saveCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
+
+    function addToCart(id, btnEl){
+      const p = products.find(x=>x.id===id);
+      let cart = getCart();
+      const idx = cart.findIndex(i=>i.id===id);
+      if(idx>-1) cart[idx].qty++;
+      else cart.push({id:p.id,name:p.name,price:p.price,img:p.img,qty:1});
+      saveCart(cart);
+
+      // flying thumbnail effect
+      if(btnEl){
+        const card = btnEl.closest('.card');
+        const img = card.querySelector('img');
+        const fly = img.cloneNode(true);
+        const r = img.getBoundingClientRect();
+        fly.style.position='fixed'; fly.style.left = r.left + 'px'; fly.style.top = r.top + 'px';
+        fly.style.width = r.width + 'px'; fly.style.zIndex = 9999; fly.style.transition = 'all .9s ease-in-out';
+        document.body.appendChild(fly);
+        setTimeout(()=>{ fly.style.transform = 'translateY(-22vh) scale(.28)'; fly.style.left = (window.innerWidth-90) + 'px'; fly.style.top = '20px'; fly.style.opacity = '.6'; },20);
+        setTimeout(()=> fly.remove(),1000);
+      }
+
+      // toast
+      const t = document.createElement('div'); t.textContent = p.name + ' ditambahkan ke keranjang'; t.style.cssText = 'position:fixed;right:16px;top:88px;background:var(--accent);color:white;padding:10px 14px;border-radius:8px;box-shadow:0 10px 30px rgba(14,30,80,0.12);z-index:120;';
+      document.body.appendChild(t); setTimeout(()=> t.remove(),1600);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPEX — Keranjang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent:#1E3A8A;
+      --accent-2:#3B82F6;
+      --bg-start:#eef2ff;
+      --bg-end:#ffffff;
+    }
+    html { font-size:20px; }
+    body{
+      font-family:Inter,sans-serif;
+      background:linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      color:#0b1220;
+      margin:0;
+      -webkit-font-smoothing:antialiased;
+    }
+    .brand{
+      font-family:Poppins,sans-serif;
+      font-weight:800;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    header{
+      position:fixed;top:0;left:0;right:0;z-index:80;
+      background:transparent;
+      transition:background-color .4s ease, box-shadow .4s ease;
+    }
+    header.scrolled{background:rgba(255,255,255,0.9);box-shadow:0 6px 25px rgba(14,30,80,0.1);}
+    header .inner{max-width:1440px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+    header nav a{margin-left:1rem;font-weight:600;color:var(--accent);}
+    header nav a:hover{color:var(--accent-2);}
+    main{padding-top:100px;}
+    .card{background:#fff;border-radius:14px;box-shadow:0 14px 50px rgba(14,30,80,.06);padding:1rem;}
+    .btn-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border-radius:10px;padding:.8rem 1.2rem;font-weight:700;transition:all .2s;}
+    .btn-accent:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(30,58,138,.15);}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:60;}
+    .modal.active{display:flex;}
+
+    footer{background:#fff;border-top:1px solid #eef2ff;padding:2.25rem 0;color:#334155;margin-top:4rem;}
+    .footer-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;max-width:1440px;margin:0 auto;padding:0 2rem;}
+
+    @media(max-width:900px){
+      html{font-size:18px;}
+      .footer-inner{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <a href="index.html" class="brand text-3xl">SPEX</a>
+      <nav class="hidden lg:flex items-center">
+        <a href="index.html" class="px-3">Home</a>
+        <a href="produk.html" class="px-3">Produk</a>
+        <a href="keranjang.html" class="px-3">Keranjang</a>
+        <a href="kontak.html" class="px-3">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="centered max-w-[1440px] mx-auto px-6 pt-28 pb-16">
+    <h1 class="text-4xl font-extrabold text-center mb-10 text-[var(--accent)]">Keranjang Belanja</h1>
+    <div id="cartArea" class="space-y-5"></div>
+
+    <div id="summary" class="hidden mt-10 p-6 card">
+      <div class="flex justify-between items-center mb-4">
+        <div class="font-semibold">Subtotal</div>
+        <div id="subtotal" class="font-bold text-lg"></div>
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2 font-semibold">Alamat Pengiriman</label>
+        <textarea id="addr" class="w-full p-3 border rounded" rows="3"></textarea>
+      </div>
+      <div class="mb-5">
+        <label class="block mb-2 font-semibold">Metode Pembayaran</label>
+        <select id="pay" class="w-full p-3 border rounded">
+          <option value="">-- Pilih --</option>
+          <option value="bank">Transfer Bank</option>
+          <option value="cod">COD (Bayar di Tempat)</option>
+        </select>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="doCheckout()" class="btn-accent">Checkout Sekarang</button>
+        <button onclick="clearCart()" class="px-4 py-2 border rounded">Kosongkan</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Popup sukses -->
+  <div id="popup" class="modal">
+    <div class="bg-white rounded-2xl p-6 text-center shadow-xl max-w-sm w-full">
+      <h3 class="text-2xl font-bold text-[var(--accent)]">✅ Pembayaran Berhasil!</h3>
+      <p class="mt-3 text-gray-700">Terima kasih telah berbelanja di SPEX. Pesanan Anda sedang diproses.</p>
+      <button onclick="closePopup()" class="btn-accent mt-5 px-6 py-2 rounded-lg">Kembali ke Home</button>
+    </div>
+  </div>
+
+  <footer class="full-bleed">
+    <div class="footer-inner">
+      <div>
+        <div class="brand text-2xl">SPEX</div>
+        <p class="text-gray-600 mt-3">Performance Beyond Limits — © 2025 by $alemo</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Bantuan</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li><a href="#" class="hover:text-blue-700">Cara Pemesanan</a></li>
+          <li><a href="#" class="hover:text-blue-700">Pengembalian</a></li>
+          <li><a href="#" class="hover:text-blue-700">Garansi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Kontak</h4>
+        <p class="text-gray-600">cs@spex.co.id • +62 812-3456-7890</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      const header = document.querySelector("header");
+      if (window.scrollY > 60) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+
+    // cart logic
+    function getCart(){return JSON.parse(localStorage.getItem('cart')||'[]');}
+    function saveCart(c){localStorage.setItem('cart',JSON.stringify(c));}
+    function renderCart(){
+      const cart=getCart(),area=document.getElementById('cartArea');
+      area.innerHTML='';
+      if(cart.length===0){area.innerHTML='<p class="text-center text-gray-600">Keranjang kosong — tambahkan produk dari halaman Produk.</p>';document.getElementById('summary').classList.add('hidden');return;}
+      let total=0;
+      cart.forEach((it,idx)=>{
+        total+=it.price*it.qty;
+        const el=document.createElement('div');el.className='flex items-center gap-5 card';
+        el.innerHTML=`
+          <img src="${it.img}" class="w-32 h-32 object-cover rounded">
+          <div class="flex-1">
+            <div class="font-semibold text-lg">${it.name}</div>
+            <div class="text-gray-600">Rp ${it.price.toLocaleString()} × <strong>${it.qty}</strong></div>
+            <div class="mt-3 flex gap-2">
+              <button onclick="changeQty(${idx},-1)" class="px-3 py-1 border rounded">-</button>
+              <button onclick="changeQty(${idx},1)" class="px-3 py-1 border rounded">+</button>
+              <button onclick="removeItem(${idx})" class="px-3 py-1 border rounded text-red-600">Hapus</button>
+            </div>
+          </div>
+          <div class="font-bold text-[var(--accent)]">Rp ${(it.price*it.qty).toLocaleString()}</div>`;
+        area.appendChild(el);
+      });
+      document.getElementById('subtotal').textContent='Rp '+total.toLocaleString();
+      document.getElementById('summary').classList.remove('hidden');
+    }
+    function changeQty(i,d){const c=getCart();c[i].qty+=d;if(c[i].qty<1)c[i].qty=1;saveCart(c);renderCart();}
+    function removeItem(i){const c=getCart();c.splice(i,1);saveCart(c);renderCart();}
+    function clearCart(){localStorage.removeItem('cart');renderCart();}
+    function doCheckout(){
+      const addr=document.getElementById('addr').value.trim();
+      const pay=document.getElementById('pay').value;
+      if(!addr||!pay){alert('Isi alamat dan metode pembayaran dulu!');return;}
+      localStorage.removeItem('cart');
+      document.getElementById('popup').classList.add('active');
+    }
+    function closePopup(){document.getElementById('popup').classList.remove('active');window.location.href='index.html';}
+    renderCart();
+  </script>
+</body>
+</html>

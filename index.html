@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SPEX — Home</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --accent:#1E3A8A;
+      --accent-2:#3B82F6;
+      --bg-start:#eef2ff;
+      --bg-end:#ffffff;
+    }
+
+    html { font-size:20px; }
+    body {
+      font-family: Inter, sans-serif;
+      background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+      color: #0b1220;
+      margin:0;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .brand {
+      font-family:Poppins, sans-serif;
+      font-weight:800;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* HEADER */
+    header {
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:80;
+      background: transparent;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    header.scrolled {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 6px 25px rgba(14,30,80,0.1);
+    }
+
+    header .inner {
+      max-width:1440px;
+      margin:0 auto;
+      padding:1rem 2rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+
+    header nav a {
+      margin-left:1rem;
+      font-weight:600;
+      color: var(--accent);
+      transition: color 0.3s;
+    }
+
+    header nav a:hover { color: var(--accent-2); }
+
+    main { padding-top:88px; }
+
+    /* FULL WIDTH */
+    .full-bleed {
+      width:100vw;
+      position:relative;
+      left:50%;
+      right:50%;
+      margin-left:-50vw;
+      margin-right:-50vw;
+    }
+
+    .centered { max-width:1440px; margin:0 auto; padding:0 2rem; }
+
+    /* HERO */
+    .hero { height:86vh; position:relative; overflow:hidden; }
+    .hero .slide {
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+      opacity:0; transform:translateY(18px);
+      transition: all .9s cubic-bezier(.2,.9,.2,1);
+      filter: contrast(1.03) saturate(1.04);
+    }
+    .hero .slide.active { opacity:1; transform:none; }
+    .hero .overlay {
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(30,58,138,0.58), rgba(255,255,255,0.02));
+      display:flex; align-items:center; padding:3.5rem 6rem;
+    }
+    .hero h1 { font-size:3.8rem; line-height:1; color:#fff; text-shadow:0 12px 40px rgba(14,30,80,0.28); }
+    .hero p { font-size:1.35rem; color:rgba(255,255,255,0.95); max-width:70ch; margin-top:1rem; }
+
+    .btn-accent {
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      padding:.9rem 1.25rem;
+      border-radius:14px;
+      font-weight:700;
+      box-shadow: 0 14px 40px rgba(30,58,138,0.14);
+      transition: transform .22s, box-shadow .22s;
+    }
+    .btn-accent:hover {
+      transform:translateY(-6px);
+      box-shadow: 0 28px 70px rgba(30,58,138,0.18);
+    }
+
+    /* KATEGORI */
+    section.full-bleed[aria-label="Kategori"] {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .cat-row { 
+      display:grid;
+      grid-template-columns: repeat(4,1fr);
+      gap:1.5rem; 
+    }
+
+    .cat-banner {
+      position:relative;
+      height:260px;
+      overflow:hidden;
+      cursor:pointer;
+      transition:transform .45s, filter .4s;
+      box-shadow: inset 0 -60px 100px rgba(0,0,0,0.18);
+      border-radius:14px;
+    }
+
+    .cat-banner img { 
+      width:100%; height:100%; object-fit:cover;
+      transform-origin:center;
+      transition: transform .6s ease;
+    }
+
+    .cat-banner .label {
+      position:absolute;
+      left:3rem;
+      bottom:2rem;
+      color:#fff;
+      font-weight:800;
+      font-size:1.55rem;
+      text-shadow:0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cat-banner:hover img { transform: scale(1.08); filter:brightness(.95) saturate(1.06); }
+    .cat-banner:hover { transform: translateY(-6px); }
+
+    /* BEST SELLER */
+    .product-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap:1.5rem;
+      margin-top:2rem;
+    }
+
+    .product-card {
+      background:white;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.06);
+      transition:transform .3s, box-shadow .3s;
+    }
+
+    .product-card:hover {
+      transform:translateY(-8px);
+      box-shadow:0 18px 50px rgba(0,0,0,0.1);
+    }
+
+    .product-card img {
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    .product-card .info {
+      padding:1rem;
+    }
+
+    /* ABOUT */
+    .about {
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:2rem;
+      margin-top:4rem;
+    }
+
+    .about img {
+      flex:1;
+      min-width:300px;
+      border-radius:14px;
+    }
+
+    .about .text {
+      flex:1;
+      min-width:300px;
+    }
+
+    /* FOOTER */
+    footer {
+      background:#fff;
+      border-top:1px solid #eef2ff;
+      padding:2.25rem 0;
+      color:#334155;
+      margin-top:4rem;
+    }
+
+    .footer-inner {
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:1.25rem;
+      max-width:1440px;
+      margin:0 auto;
+      padding:0 2rem;
+    }
+
+    @media (max-width:1024px){
+      .cat-row{ grid-template-columns: repeat(2,1fr); }
+      .about{flex-direction:column;}
+    }
+
+    @media (max-width:640px){
+      html{font-size:17px;}
+      .cat-row{ grid-template-columns:1fr; }
+      .hero{height:60vh;}
+      .hero h1{font-size:2rem;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <a href="index.html" class="brand text-3xl">SPEX</a>
+      <nav class="hidden lg:flex items-center">
+        <a href="index.html" class="px-3">Home</a>
+        <a href="produk.html" class="px-3">Produk</a>
+        <a href="keranjang.html" class="px-3">Keranjang</a>
+        <a href="kontak.html" class="px-3">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero full-bleed">
+      <img class="slide active" src="https://images.unsplash.com/photo-1607962837359-5e7e89f86776?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
+      <img class="slide active" src="https://images.unsplash.com/photo-1626248801379-51a0748a5f96?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
+      <img class="slide active" src="https://images.unsplash.com/photo-1760174034302-e4e8177569ff?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070">
+      <div class="overlay">
+        <div class="centered max-w-3xl">
+          <h1 class="font-extrabold">Performance Beyond Limits</h1>
+          <p class="mt-4">SPEX menggabungkan riset biomekanik dan material premium untuk mendukung performa, stabilitas, dan kenyamanan dalam setiap langkah.</p>
+          <div class="mt-8"><a href="produk.html" class="btn-accent">Lihat Koleksi</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATEGORI -->
+    <section class="full-bleed" aria-label="Kategori">
+      <div class="cat-row">
+        <div class="cat-banner" onclick="location.href='produk.html?cat=running'">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1040083_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="label">Running</div>
+        </div>
+        <div class="cat-banner" onclick="location.href='produk.html?cat=football'">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1010288_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="label">Football</div>
+        </div>
+        <div class="cat-banner" onclick="location.href='produk.html?cat=futsal'">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1020252_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="label">Futsal</div>
+        </div>
+        <div class="cat-banner" onclick="location.href='produk.html?cat=lifestyle'">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1000098_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="label">Lifestyle</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEST SELLER -->
+    <section class="centered mt-20">
+      <h2 class="text-3xl font-bold text-center text-[var(--accent)] mb-8">Best Seller</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1040045-1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="info">
+            <h3 class="font-semibold">SPEX Velocity 3.0</h3>
+            <p class="text-gray-600">Sepatu lari ringan dengan midsole reaktif.</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1010232_1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="info">
+            <h3 class="font-semibold">SPEX Phantom FG</h3>
+            <p class="text-gray-600">Kontrol bola maksimal untuk pemain profesional.</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="https://www.specs.id/media/catalog/product/s/p/spe1020215-1.jpg?optimize=high&bg-color=255,255,255&fit=bounds&height=1683&width=1683&canvas=1683:1683">
+          <div class="info">
+            <h3 class="font-semibold">SPEX Blaze Pro</h3>
+            <p class="text-gray-600">Stabilitas optimal untuk permainan cepat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="centered about">
+      <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
+      <div class="text">
+        <h2 class="text-3xl font-bold text-[var(--accent)] mb-4">Tentang SPEX</h2>
+        <p>SPEX berdedikasi menciptakan perlengkapan olahraga yang menggabungkan teknologi mutakhir dan desain fungsional. Kami melakukan riset biomekanik dan pengujian lapangan untuk mengembangkan midsole, stabilizer, dan material atas yang meningkatkan performa sekaligus meminimalkan cedera.</p>
+        <p>Kami juga berkomitmen pada praktik produksi berkelanjutan: memilih material yang lebih ramah lingkungan, mengurangi limbah manufaktur, dan bekerja sama dengan pabrik yang menerapkan standar etika. Selain itu, SPEX aktif mendukung komunitas atlet lokal melalui program pelatihan, sponsorship, dan kolaborasi desain bersama atlet profesional untuk memastikan setiap produk benar‑benar memenuhi kebutuhan pengguna di lapangan.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="full-bleed">
+    <div class="footer-inner">
+      <div>
+        <div class="brand text-2xl">SPEX</div>
+        <p class="text-gray-600 mt-3">Performance Beyond Limits — © 2025 by $alemo</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Bantuan</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li><a href="#" class="hover:text-blue-700">Cara Pemesanan</a></li>
+          <li><a href="#" class="hover:text-blue-700">Pengembalian</a></li>
+          <li><a href="#" class="hover:text-blue-700">Garansi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Kontak</h4>
+        <p class="text-gray-600">cs@spex.co.id • +62 812-3456-7890</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Hero slider
+    (function(){
+      const slides = document.querySelectorAll('.hero .slide');
+      let idx=0;
+      function show(n){ slides.forEach((s,i)=> s.classList.toggle('active', i===n)); }
+      setInterval(()=>{ idx=(idx+1)%slides.length; show(idx); }, 4800);
+    })();
+
+    // Header transparan → putih saat scroll
+    window.addEventListener("scroll", () => {
+      const header = document.querySelector("header");
+      if (window.scrollY > 60) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+  </script>
+</body>
+</html>
